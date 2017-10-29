@@ -1,10 +1,10 @@
 set(SRCS
         main.cpp
-        matrix.cpp
+        #matrix.cpp
     )
 
 set(HEADERS
-        matrix.h
+        #matrix.h
     )
 
 add_executable(${CMAKE_PROJECT_NAME} ${SRCS} ${HEADERS})
