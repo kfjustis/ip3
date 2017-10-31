@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "matrix.h"
+#include "tests.h"
 
 int main(int argc, char** argv) {
 	// check args
@@ -26,20 +27,9 @@ int main(int argc, char** argv) {
 			return -1;
 		}
 
-		cv::Mat sobel = cv::Mat::Mat(3, 3, CV_64F);
-		sobel.at<double>(0,0) = -1;
-		sobel.at<double>(0,1) = 0;
-		sobel.at<double>(0,2) = 1;
-		sobel.at<double>(1,0) = -2;
-		sobel.at<double>(1,1) = 0;
-		sobel.at<double>(1,2) = 2;
-		sobel.at<double>(2,0) = -1;
-		sobel.at<double>(2,1) = 0;
-		sobel.at<double>(2,2) = 1;
-
-		std::cout << "Testing PadMatrix..." << std::endl;
-		std::cout << sobel << std::endl;
-		std::cout << ip3::PadMatrix(&sobel) << std::endl;
+		// call tests
+		//ip3::TEST_PadMatrix();
+		ip3::TEST_AverageMatrix();
 	} else {
 		// load input data
 		cv::Mat src_image;
