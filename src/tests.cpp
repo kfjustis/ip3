@@ -24,6 +24,24 @@ void TEST_AverageMatrix() {
 	double average = AverageMatrix(&test_mat);
     std::cout << "TEST_AverageMatrix :: average is " << average << std::endl;
 
+    cv::Mat test_mat2 = cv::Mat::Mat(3, 3, CV_64F);
+
+    test_mat2.at<double>(0,0) = 3;
+    test_mat2.at<double>(0,1) = 3;
+    test_mat2.at<double>(0,2) = 3;
+    test_mat2.at<double>(1,0) = 3;
+    test_mat2.at<double>(1,1) = 3;
+    test_mat2.at<double>(1,2) = 3;
+    test_mat2.at<double>(2,0) = 3;
+    test_mat2.at<double>(2,1) = 3;
+    test_mat2.at<double>(2,2) = 3;
+
+    std::cout << "Input: " << std::endl;
+	std::cout << test_mat2 << std::endl;
+
+    average = AverageMatrix(&test_mat2);
+    std::cout << "TEST_AverageMatrix :: average is " << average << std::endl;
+
     test_mat.release();
 }
 
