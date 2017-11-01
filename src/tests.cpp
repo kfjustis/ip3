@@ -47,7 +47,42 @@ void TEST_AverageMatrix() {
 }
 
 void TEST_ConvolveImage() {
-	return;
+	std::cout << "Testing ConvolveImage..." << std::endl;
+	cv::Mat tm = cv::Mat::Mat(3, 3, CV_64F);
+    /* 1 2 3
+       4 5 6
+       7 8 9 */
+    tm.at<double>(0,0) = 1;
+    tm.at<double>(0,1) = 2;
+    tm.at<double>(0,2) = 3;
+    tm.at<double>(1,0) = 4;
+    tm.at<double>(1,1) = 5;
+    tm.at<double>(1,2) = 6;
+    tm.at<double>(2,0) = 7;
+    tm.at<double>(2,1) = 8;
+    tm.at<double>(2,2) = 9;
+
+	cv::Mat k = cv::Mat::Mat(3, 3, CV_64F);
+    /*  1  2  1
+        0  0  0
+       -1 -2 -1 */
+    k.at<double>(0,0) = 1;
+    k.at<double>(0,1) = 2;
+    k.at<double>(0,2) = 1;
+    k.at<double>(1,0) = 0;
+    k.at<double>(1,1) = 0;
+    k.at<double>(1,2) = 0;
+    k.at<double>(2,0) = -1;
+    k.at<double>(2,1) = -2;
+    k.at<double>(2,2) = -1;
+
+	std::cout << "Source matrix:" << std::endl;
+	std::cout << tm << std::endl;
+
+	ip3::ConvolveImage(&tm, &k);
+
+	tm.release();
+	k.release();
 }
 
 void TEST_ConvolveMatrix() {

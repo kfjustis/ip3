@@ -24,7 +24,7 @@ bool CheckSliceDimensions(const cv::Mat* src);
 
 /*
  * Iteratively visits every pixel in the source image and convolves it with
- * the given kernel. The resulting image is returned.
+ * the given kernel. Do not pass 0-padded input. The resulting image is returned.
  * PARAMS: const cv::Mat* src - address of the source matrix
  *         const cv::Mat* kernel - address of the kernel matrix
  * RETURN: cv::Mat - the resulting image after convolution, empty matrix on failure

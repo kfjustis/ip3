@@ -50,10 +50,18 @@ cv::Mat ConvolveImage(const cv::Mat* src, const cv::Mat* kernel) {
 
 	// clone and pad the source matrix
 	cv::Mat src_clone_p = ip3::PadMatrix(src);
-
+	//cv::Mat src_clone = src->clone();
+	cv::Mat slice;
 	// TODO implement GETMATRIXSLICE
+	for (int i = 0; i < (src_clone_p.rows - kernel->rows+1); ++i) {
+		for (int j = 0; j < (src_clone_p.cols - kernel->cols+1); ++j) {
+			slice = ip3::GetMatrixSlice(&src_clone_p, i, j, kernel->rows);
+			std::cout << slice << std::endl;
+		}
+	}
 
 	src_clone_p.release();
+	slice.release();
 
 	return cv::Mat();
 }
