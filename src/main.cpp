@@ -30,7 +30,9 @@ int main(int argc, char** argv) {
 		// call tests
 		//ip3::TEST_PadMatrix();
 		//ip3::TEST_AverageMatrix();
-		ip3::TEST_ConvolveMatrix();
+		//ip3::TEST_ConvolveMatrix();
+		//ip3::TEST_ConvolveImage();
+		ip3::TEST_GetMatrixSlice();
 	} else {
 		// load input data
 		cv::Mat src_image;

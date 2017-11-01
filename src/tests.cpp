@@ -46,6 +46,10 @@ void TEST_AverageMatrix() {
 	test_mat2.release();
 }
 
+void TEST_ConvolveImage() {
+	return;
+}
+
 void TEST_ConvolveMatrix() {
 	std::cout << "Testing ConvolveMatrix..." << std::endl;
 	cv::Mat tm = cv::Mat::Mat(3, 3, CV_64F);
@@ -128,6 +132,73 @@ void TEST_ConvolveMatrix() {
 	tm2.release();
 	k.release();
 	k2.release();
+}
+
+void TEST_GetMatrixSlice() {
+	std::cout << "Testing GetMatrixSlice..." << std::endl;
+
+	cv::Mat test = cv::Mat::Mat(3, 3, CV_64F);
+	/* 1 2 3
+       4 5 6
+       7 8 9 */
+    test.at<double>(0,0) = 1;
+    test.at<double>(0,1) = 2;
+    test.at<double>(0,2) = 3;
+    test.at<double>(1,0) = 4;
+    test.at<double>(1,1) = 5;
+    test.at<double>(1,2) = 6;
+    test.at<double>(2,0) = 7;
+    test.at<double>(2,1) = 8;
+    test.at<double>(2,2) = 9;
+
+	std::cout << "Input: " << std::endl;
+	std::cout << test << std::endl;
+
+	cv::Mat slice1 = ip3::GetMatrixSlice(&test,0,0,3);
+	std::cout << "Full slice: " << std::endl;
+	std::cout << slice1 << std::endl;
+
+	cv::Mat test_p = ip3::PadMatrix(&test);
+	std::cout << "Input padded: " << std::endl;
+	std::cout << test_p << std::endl;
+
+	cv::Mat slice2 = ip3::GetMatrixSlice(&test_p,0,0,3);
+	std::cout << "TL slice: " << std::endl;
+	std::cout << slice2 << std::endl;
+
+	cv::Mat slice3 = ip3::GetMatrixSlice(&test_p,0,2,3);
+	std::cout << "TR slice: " << std::endl;
+	std::cout << slice3 << std::endl;
+
+	slice3 = ip3::GetMatrixSlice(&test_p,2,0,3);
+	std::cout << "BL slice: " << std::endl;
+	std::cout << slice3 << std::endl;
+
+	slice3 = ip3::GetMatrixSlice(&test_p,2,2,3);
+	std::cout << "BR slice: " << std::endl;
+	std::cout << slice3 << std::endl;
+
+	slice3 = ip3::GetMatrixSlice(&test_p,4,4,3);
+	std::cout << "Invalid coord (4,4): " << std::endl;
+	std::cout << slice3 << std::endl;
+
+	slice3 = ip3::GetMatrixSlice(&test_p,-1,-1,3);
+	std::cout << "Invalid coord (-1,-1): " << std::endl;
+	std::cout << slice3 << std::endl;
+
+	slice3 = ip3::GetMatrixSlice(&test_p,0,0,7);
+	std::cout << "Valid coord (0,0) bad kernel_size (7): " << std::endl;
+	std::cout << slice3 << std::endl;
+
+	slice3 = ip3::GetMatrixSlice(&test_p,1,2,3);
+	std::cout << "Random valid coord: " << std::endl;
+	std::cout << slice3 << std::endl;
+
+	test.release();
+	test_p.release();
+	slice1.release();
+	slice2.release();
+	slice3.release();
 }
 
 void TEST_PadMatrix() {

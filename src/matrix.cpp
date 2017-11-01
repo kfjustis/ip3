@@ -43,6 +43,21 @@ bool CheckSliceDimensions(const cv::Mat* src) {
     return true;
 }
 
+cv::Mat ConvolveImage(const cv::Mat* src, const cv::Mat* kernel) {
+	if (src == NULL || kernel == NULL) {
+		return cv::Mat();
+	}
+
+	// clone and pad the source matrix
+	cv::Mat src_clone_p = ip3::PadMatrix(src);
+
+	// TODO implement GETMATRIXSLICE
+
+	src_clone_p.release();
+
+	return cv::Mat();
+}
+
 int ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel) {
 	if (slice == NULL || kernel == NULL) {
 		return -1;
@@ -62,6 +77,61 @@ int ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel) {
 	}
 
 	return (int) sum;
+}
+
+cv::Mat GetMatrixSlice(const cv::Mat* src, int row, int col, int kernel_size) {
+	if (src == NULL) {
+		return cv::Mat();
+	}
+
+	// check coordinates and kernel size
+	// invalid coordinates
+	if (row < 0 || col < 0) {
+		return cv::Mat();
+	}
+	// out of bounds coordinates
+	if (row > src->rows || col > src->cols) {
+		return cv::Mat();
+	}
+	// invalid kernel size
+	if (kernel_size <= 0) {
+		return cv::Mat();
+	}
+	// kernel larger than entire source matrix
+	if (kernel_size * kernel_size > src->rows * src->cols) {
+		return cv::Mat();
+	}
+	// kernel would have to extend beyond source bounds
+	if (row + kernel_size-1 > src->rows || col + kernel_size-1 > src->cols) {
+		return cv::Mat();
+	}
+
+	// generate slice matrix and load data from source image
+	cv::Mat slice;
+
+	// if kernel same size as source, just return source
+	if (kernel_size * kernel_size == src->rows * src->cols) {
+		slice = src->clone();
+		return slice;
+	} else {
+		slice  = cv::Mat::Mat(kernel_size, kernel_size, CV_64F);
+	}
+
+	// copy the data from source into slice
+	int i = 0, j = 0, k = 0, l = 0;
+	for (i = row; i < (row + kernel_size); ++i, ++k) {
+		if (k == kernel_size) {
+			k = 0;
+		}
+		for (j = col; j < (col + kernel_size); ++j, ++l) {
+			if (l == kernel_size) {
+				l = 0;
+			}
+			slice.at<double>(k,l) = src->at<double>(i,j);
+		}
+	}
+
+	return slice;
 }
 
 cv::Mat PadMatrix(const cv::Mat* src) {
