@@ -43,6 +43,27 @@ bool CheckSliceDimensions(const cv::Mat* src) {
     return true;
 }
 
+int ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel) {
+	if (slice == NULL || kernel == NULL) {
+		return -1;
+	}
+
+	// check that both mats are equal size
+	if (slice->rows != kernel->rows || slice->cols != kernel-> cols) {
+		return -1;
+	}
+
+	// loop through and convolve
+	double sum = 0;
+	for (int i = 0; i < slice->rows; ++i) {
+		for (int j = 0; j < slice->cols; ++j) {
+			sum += slice->at<double>(i,j) * kernel->at<double>(i,j);
+		}
+	}
+
+	return (int) sum;
+}
+
 cv::Mat PadMatrix(const cv::Mat* src) {
 	if (src == NULL) {
 		return cv::Mat();
@@ -66,5 +87,4 @@ cv::Mat PadMatrix(const cv::Mat* src) {
 	}
 	return p_mat;
 }
-
 } // namespace

@@ -21,7 +21,7 @@ void TEST_AverageMatrix() {
 	std::cout << "Input: " << std::endl;
 	std::cout << test_mat << std::endl;
 
-	double average = AverageMatrix(&test_mat);
+	double average = ip3::AverageMatrix(&test_mat);
     std::cout << "TEST_AverageMatrix :: average is " << average << std::endl;
 
     cv::Mat test_mat2 = cv::Mat::Mat(3, 3, CV_64F);
@@ -39,10 +39,95 @@ void TEST_AverageMatrix() {
     std::cout << "Input: " << std::endl;
 	std::cout << test_mat2 << std::endl;
 
-    average = AverageMatrix(&test_mat2);
+    average = ip3::AverageMatrix(&test_mat2);
     std::cout << "TEST_AverageMatrix :: average is " << average << std::endl;
 
     test_mat.release();
+	test_mat2.release();
+}
+
+void TEST_ConvolveMatrix() {
+	std::cout << "Testing ConvolveMatrix..." << std::endl;
+	cv::Mat tm = cv::Mat::Mat(3, 3, CV_64F);
+    /* 40 42 46
+       46 50 55
+       52 56 58 */
+    tm.at<double>(0,0) = 40;
+    tm.at<double>(0,1) = 42;
+    tm.at<double>(0,2) = 46;
+    tm.at<double>(1,0) = 46;
+    tm.at<double>(1,1) = 50;
+    tm.at<double>(1,2) = 55;
+    tm.at<double>(2,0) = 52;
+    tm.at<double>(2,1) = 56;
+    tm.at<double>(2,2) = 58;
+
+	cv::Mat k = cv::Mat::Mat(3, 3, CV_64F);
+    /* 0 1 0
+       0 0 0
+       0 0 0 */
+    k.at<double>(0,0) = 0;
+    k.at<double>(0,1) = 1;
+    k.at<double>(0,2) = 0;
+    k.at<double>(1,0) = 0;
+    k.at<double>(1,1) = 0;
+    k.at<double>(1,2) = 0;
+    k.at<double>(2,0) = 0;
+    k.at<double>(2,1) = 0;
+    k.at<double>(2,2) = 0;
+
+	std::cout << "Input slice: " << std::endl;
+	std::cout << tm << std::endl;
+	std::cout << "Input kernel: " << std::endl;
+	std::cout << k << std::endl;
+
+	int value = ip3::ConvolveMatrix(&tm, &k);
+
+	std::cout << "Calculated value: " << std::endl;
+	std::cout << value << std::endl;
+
+	cv::Mat tm2 = cv::Mat::Mat(3, 3, CV_64F);
+    /* 40 42 46
+       46 50 55
+       52 56 58 */
+    tm2.at<double>(0,0) = 1;
+    tm2.at<double>(0,1) = 2;
+    tm2.at<double>(0,2) = 3;
+    tm2.at<double>(1,0) = 4;
+    tm2.at<double>(1,1) = 5;
+    tm2.at<double>(1,2) = 5;
+    tm2.at<double>(2,0) = 7;
+    tm2.at<double>(2,1) = 8;
+    tm2.at<double>(2,2) = 9;
+
+	cv::Mat k2 = cv::Mat::Mat(3, 3, CV_64F);
+    /* 0 1 0
+       0 0 0
+       0 0 0 */
+    k2.at<double>(0,0) = 1;
+    k2.at<double>(0,1) = 2;
+    k2.at<double>(0,2) = 1;
+    k2.at<double>(1,0) = 0;
+    k2.at<double>(1,1) = 0;
+    k2.at<double>(1,2) = 0;
+    k2.at<double>(2,0) = -1;
+    k2.at<double>(2,1) = -2;
+    k2.at<double>(2,2) = -1;
+
+	std::cout << "Input slice 2: " << std::endl;
+	std::cout << tm2 << std::endl;
+	std::cout << "Input kernel 2: " << std::endl;
+	std::cout << k2 << std::endl;
+
+	value = ip3::ConvolveMatrix(&tm2, &k2);
+
+	std::cout << "Calculated value 2: " << std::endl;
+	std::cout << value << std::endl;
+
+	tm.release();
+	tm2.release();
+	k.release();
+	k2.release();
 }
 
 void TEST_PadMatrix() {
@@ -83,5 +168,4 @@ void TEST_PadMatrix() {
 	sobel.release();
 	random1.release();
 }
-
 } // namespace

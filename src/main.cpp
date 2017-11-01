@@ -29,7 +29,8 @@ int main(int argc, char** argv) {
 
 		// call tests
 		//ip3::TEST_PadMatrix();
-		ip3::TEST_AverageMatrix();
+		//ip3::TEST_AverageMatrix();
+		ip3::TEST_ConvolveMatrix();
 	} else {
 		// load input data
 		cv::Mat src_image;
@@ -50,7 +51,9 @@ int main(int argc, char** argv) {
 		std::cout << "\tImage: " << argv[1] << std::endl;
 		std::cout << "\tSigma: " << (int) sigma << std::endl;
 		std::cout << "\tHigh threshold: " << (int) t_h << std::endl;
-		std::cout << "\tLow threshold: " << (int) t_l << std::endl;
+		std::cout << "\tLow threshold: " << (int) t_l << std::endl << std::endl;
+
+		std::cout << "Calculating filtered gradient..." << std::endl;
 	}
 
 	// cleanup
