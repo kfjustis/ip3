@@ -63,9 +63,9 @@ void TEST_ConvolveImage() {
     tm.at<double>(2,2) = 9;
 
 	cv::Mat k = cv::Mat::Mat(3, 3, CV_64F);
-    /*  1  2  1
-        0  0  0
-       -1 -2 -1 */
+    /*  1    2   1
+        0    0   0
+       -1   -2  -1 */
     k.at<double>(0,0) = 1;
     k.at<double>(0,1) = 2;
     k.at<double>(0,2) = 1;
@@ -79,10 +79,13 @@ void TEST_ConvolveImage() {
 	std::cout << "Source matrix:" << std::endl;
 	std::cout << tm << std::endl;
 
-	ip3::ConvolveImage(&tm, &k);
+	cv::Mat output = ip3::ConvolveImage(&tm, &k);
+	std::cout << "Output:" << std::endl;
+	std::cout << output << std::endl;
 
 	tm.release();
 	k.release();
+	output.release();
 }
 
 void TEST_ConvolveMatrix() {

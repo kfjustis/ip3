@@ -7,6 +7,7 @@
 namespace ip3 {
 void TEST_AverageMatrix();
 
+// Source: http://www.songho.ca/dsp/convolution/convolution2d_example.html
 void TEST_ConvolveImage();
 
 void TEST_ConvolveMatrix();
