@@ -62,13 +62,56 @@ int main(int argc, char** argv) {
 
 		//m_filtered.convertTo(m_filtered, CV_8UC1);
 		//m_filtered.convertTo(m_filtered, CV_64F);
-
 		/*cv::namedWindow("Main :: MeanFilter output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: MeanFilter output", m_filtered);
 	    cv::waitKey(0);*/
 
+		// generate sobel_x kernel
+		cv::Mat sobel_x = cv::Mat::Mat(3, 3, CV_64F);
+		sobel_x.at<double>(0,0) = -1;
+		sobel_x.at<double>(0,1) = 0;
+		sobel_x.at<double>(0,2) = 1;
+		sobel_x.at<double>(1,0) = -2;
+		sobel_x.at<double>(1,1) = 0;
+		sobel_x.at<double>(1,2) = 2;
+		sobel_x.at<double>(2,0) = -1;
+		sobel_x.at<double>(2,1) = 0;
+		sobel_x.at<double>(2,2) = 1;
+
+		// generate sobel_y kernel
+		cv::Mat sobel_y = cv::Mat::Mat(3, 3, CV_64F);
+		sobel_y.at<double>(0,0) = -1;
+		sobel_y.at<double>(0,1) = -2;
+		sobel_y.at<double>(0,2) = -1;
+		sobel_y.at<double>(1,0) = 0;
+		sobel_y.at<double>(1,1) = 0;
+		sobel_y.at<double>(1,2) = 0;
+		sobel_y.at<double>(2,0) = 1;
+		sobel_y.at<double>(2,1) = 2;
+		sobel_y.at<double>(2,2) = 1;
+
+		cv::Mat F_x = ip3::ConvolveImage(&m_filtered, &sobel_x);
+		cv::Mat F_y = ip3::ConvolveImage(&m_filtered, &sobel_y);
+
+		/*F_x.convertTo(F_x, CV_8UC1);
+		cv::namedWindow("Main :: F_x output", CV_WINDOW_AUTOSIZE);
+		cv::imshow("Main :: F_x output", F_x);
+		F_y.convertTo(F_y, CV_8UC1);
+		cv::namedWindow("Main :: F_y output", CV_WINDOW_AUTOSIZE);
+		cv::imshow("Main :: F_y output", F_y);
+	    cv::waitKey(0);*/
+
 		if (m_filtered.data != NULL) {
 			m_filtered.release();
+		}
+		if (sobel_x.data != NULL) {
+			sobel_x.release();
+		}
+		if (F_x.data != NULL) {
+			F_x.release();
+		}
+		if (F_y.data != NULL) {
+			F_y.release();
 		}
 	}
 
