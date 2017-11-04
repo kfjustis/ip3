@@ -1,10 +1,12 @@
 set(SRCS
+        filter.cpp
         main.cpp
         matrix.cpp
         tests.cpp
     )
 
 set(HEADERS
+        filter.h
         matrix.h
         tests.h
     )

@@ -1,15 +1,19 @@
 #include "matrix.h"
 
 namespace ip3 {
-int AverageMatrix(const cv::Mat* src) {
+double AverageMatrix(const cv::Mat* src) {
 	if (src == NULL) {
         return -1;
     }
 
     if (CheckSliceDimensions(src) == false) {
-        return -2;
+        return -1;
     }
 
+	//std::cout << "AverageMatrix :: input: " << std::endl;
+	//std::cout << src->clone() << std::endl;
+
+	//std::cout << "AverageMatrix :: sums: " << std::endl;
     // sum the elements
     double sum = 0;
     for (int i = 0; i < src->rows; ++i) {
@@ -24,7 +28,7 @@ int AverageMatrix(const cv::Mat* src) {
     double total = src->rows * src->cols;
     double average = round((sum / total));
 
-	//std::cout << "AverageMatrix :: average is " << average << std::endl;
+	//std::cout << "AverageMatrix :: average is " << (int) average << std::endl;
 
     return average;
 }
@@ -56,7 +60,7 @@ cv::Mat ConvolveImage(const cv::Mat* src, const cv::Mat* kernel) {
 	for (int i = 0; i < (src_clone_p.rows - kernel->rows+1); ++i) {
 		for (int j = 0; j < (src_clone_p.cols - kernel->cols+1); ++j) {
 			slice = ip3::GetMatrixSlice(&src_clone_p, i, j, kernel->rows);
-			conv_val = ConvolveMatrix(&slice, kernel);
+			conv_val = ip3::ConvolveMatrix(&slice, kernel);
 			output.at<double>(i,j) = conv_val;
 		}
 	}
@@ -67,7 +71,7 @@ cv::Mat ConvolveImage(const cv::Mat* src, const cv::Mat* kernel) {
 	return output;
 }
 
-int ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel) {
+double ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel) {
 	if (slice == NULL || kernel == NULL) {
 		return -1;
 	}
@@ -85,7 +89,7 @@ int ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel) {
 		}
 	}
 
-	return (int) sum;
+	return sum;
 }
 
 cv::Mat GetMatrixSlice(const cv::Mat* src, int row, int col, int kernel_size) {
@@ -129,9 +133,6 @@ cv::Mat GetMatrixSlice(const cv::Mat* src, int row, int col, int kernel_size) {
 	// copy the data from source into slice
 	int i = 0, j = 0, k = 0, l = 0;
 	for (i = row; i < (row + kernel_size); ++i, ++k) {
-		if (k == kernel_size) {
-			k = 0;
-		}
 		for (j = col; j < (col + kernel_size); ++j, ++l) {
 			if (l == kernel_size) {
 				l = 0;
@@ -148,6 +149,9 @@ cv::Mat PadMatrix(const cv::Mat* src) {
 		return cv::Mat();
 	}
 
+	cv::Mat src_clone = src->clone();
+	src_clone.convertTo(src_clone, CV_64F);
+
 	// generate padded matrix
 	int p_rows = src->rows+2;
 	int p_cols = src->cols+2;
@@ -155,15 +159,34 @@ cv::Mat PadMatrix(const cv::Mat* src) {
 
 	for (int row = 0; row < p_mat.rows; ++row) {
 		for (int col = 0; col < p_mat.cols; ++col) {
-			if (row == 0 || col == 0) {
+			if (row == 0 && col == 0) { // TL
 				p_mat.at<double>(row, col) = 0;
-			} else if (row == p_mat.rows-1 || col == p_mat.cols-1) {
+			} else if (row == 0 && col == p_mat.cols-1) { // TR
 				p_mat.at<double>(row, col) = 0;
-			} else {
-				p_mat.at<double>(row, col) = src->at<double>(row-1, col-1);
+			} else if (row == p_mat.rows-1 && col == 0) { // BL
+				p_mat.at<double>(row, col) = 0;
+			} else if (row == p_mat.rows-1 && p_mat.cols-1) { // BR
+				p_mat.at<double>(row, col) = 0;
+			} else if (row == 0) { // top row
+				p_mat.at<double>(row,col) = src_clone.at<double>(row,col-1);
+			} else if (col == 0) { // left col
+				p_mat.at<double>(row,col) = src_clone.at<double>(row-1,col);
+			} else if (col == p_mat.cols-1) { // right col
+				p_mat.at<double>(row,col) = src_clone.at<double>(row-1,col-2);
+			} else { // middle
+				p_mat.at<double>(row,col) = src_clone.at<double>(row-1, col-1);
 			}
 		}
 	}
+	// add values to the bottom row manually
+	int c = 1;
+	for (int i = p_mat.rows-1; c < p_mat.cols; ++c) {
+		p_mat.at<double>(i,c) = src_clone.at<double>(i-2,c-1);
+	}
+	p_mat.at<double>(p_mat.rows-1, 0) = 0;
+	p_mat.at<double>(p_mat.rows-1, p_mat.cols-1) = 0;
+
+	src_clone.release();
 	return p_mat;
 }
 } // namespace

@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "filter.h"
 #include "matrix.h"
 
 namespace ip3 {
@@ -13,6 +14,8 @@ void TEST_ConvolveImage();
 void TEST_ConvolveMatrix();
 
 void TEST_GetMatrixSlice();
+
+void TEST_MeanFilter(const cv::Mat* src);
 
 void TEST_PadMatrix();
 } // namespace

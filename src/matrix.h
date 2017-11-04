@@ -11,9 +11,9 @@ namespace ip3 {
  * Determines the average of the values in the matrix and returns it.
  * Dimensions must be square for this to work.
  * PARAMS: const cv::Mat* src - address of the source matrix
- * RETURN: int - the calculated average from the matrix, < 0 on failure
+ * RETURN: double - the calculated average from the matrix, < 0 on failure
  */
-int AverageMatrix(const cv::Mat* src);
+double AverageMatrix(const cv::Mat* src);
 
 /*
  * Checks that the dimensions of the slice are a perfect square.
@@ -37,9 +37,9 @@ cv::Mat ConvolveImage(const cv::Mat* src, const cv::Mat* kernel);
  * is returned. No replacement in memory occurs.
  * PARAMS: const cv::Mat* slice - address of the source slice
  *         const cv::Mat* kernel - address of the kernel matrix to convolve with
- * RETURN: int - the calculated value after convolution
+ * RETURN: double - the calculated value after convolution
  */
-int ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel);
+double ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel);
 
 /*
  * Takes a given matrix and upper left coordinate for a region slice.
@@ -54,7 +54,7 @@ int ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel);
 cv::Mat GetMatrixSlice(const cv::Mat* src, int row, int col, int kernel_size);
 
 /*
- * Takes a given matrix and returns the same matrix padded with zeros.
+ * Takes a given matrix and returns the same matrix padded with duplicate values.
  * PARAMS: const cv::Mat* src - reference to source data as an opencv matrix
  * RETURN: a new opencv matrix with padded zeros, empty matrix on failure
  */

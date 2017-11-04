@@ -239,6 +239,24 @@ void TEST_GetMatrixSlice() {
 	slice3.release();
 }
 
+void TEST_MeanFilter(const cv::Mat* src) {
+	std::cout << "Testing MeanFilter..." << std::endl;
+	if (src == NULL) {
+		std::cout << "TEST FAILED: Invalid source matrix" << std::endl;
+		return;
+	}
+
+	int iterations = 10;
+	cv::Mat output = ip3::MeanFilter(src, iterations);
+	output.convertTo(output, CV_8UC1);
+
+	cv::namedWindow("TEST_MeanFilter output", CV_WINDOW_AUTOSIZE);
+	cv::imshow("TEST_MeanFilter output", output);
+    cv::waitKey(0);
+
+	output.release();
+}
+
 void TEST_PadMatrix() {
 	std::cout << "Testing PadMatrix..." << std::endl;
 
