@@ -57,6 +57,19 @@ int main(int argc, char** argv) {
 		std::cout << "\tLow threshold: " << (int) t_l << std::endl << std::endl;
 
 		std::cout << "Calculating filtered gradient..." << std::endl;
+		// mean filter with 1 iteration
+		cv::Mat m_filtered = ip3::MeanFilter(&src_image, 3);
+
+		//m_filtered.convertTo(m_filtered, CV_8UC1);
+		//m_filtered.convertTo(m_filtered, CV_64F);
+
+		/*cv::namedWindow("Main :: MeanFilter output", CV_WINDOW_AUTOSIZE);
+		cv::imshow("Main :: MeanFilter output", m_filtered);
+	    cv::waitKey(0);*/
+
+		if (m_filtered.data != NULL) {
+			m_filtered.release();
+		}
 	}
 
 	// cleanup
