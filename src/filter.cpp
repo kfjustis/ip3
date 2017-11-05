@@ -46,32 +46,42 @@ cv::Mat NonMaxSuppress(const cv::Mat* F_orient) {
         return cv::Mat();
     }
 
-    double D_orientation = 0;
-    double D_star_orientation = 0;
-    for (int i = 0; i < F_orient->rows; ++i) {
-        for (int j = 0; j < F_orient->cols; ++j) {
-            /* for each pixel, find D* in (0, 45, 90, 135) that
-            is closest to the orientation D at that pixel */
-            D_orientation = F_orient->at<double>(i,j);
-            D_star_orientation = ip3::MapOrientation(&D_orientation);
-            /*if (D_orientation >= -45/2 || D_orientation < 45/2) {
-                D_star_orientation = 0; //0
-            } else if (D_orientation >= 45/2 || D_orientation < (45 + (45/2))) {
-                D_star_orientation = 1; //45
-            } else if (D_orientation >= (45 + (45/2)) || D_orientation < (90 + (45/2)) {
-                D_star_orientation = 2; //90
-            } else if (D_orientation >= (90 + (45/2) || D_orientation < (135 + (45/2))) {
-                D_star_orientation = 3; //135
-            } else if (D_orientation >= (135 + (45/2)) || D_orientation < (180 + (45/2))) {
-                D_star_orientation = 0;
-            } else if (D_orientation >= (180 + (45/2)) || D_orientation < (225 + (45/2))) {
-                D_star_orientation = 1;
-            } else if (D_orientation >= (225 + (45/2)) || D_orientation < (270 + (45/2))) {
-                D_star_orientation = 2;
-            } else if (D_orientation >= (270 + (45/2)) || D_orientation < (315 + (45/2))) {
-                D_star_orientation = 3;
-            }*/
+    cv::Mat output = cv::Mat::Mat(F_orient->rows, F_orient->cols, CV_64F);
+    cv::Mat padded = F_orient->clone();
+    padded.convertTo(padded, CV_64F);
+    cv::Mat slice;
+
+    double curr_orient = -500; // not a possible value
+    double curr_slice_val = -500;
+    for (int i = 0; i < padded.rows-slice.rows+1; ++i) {
+        for (int j = 0; j < padded.cols-slice.cols+1; ++j) {
+            slice = ip3::GetMatrixSlice(&padded,i,j,3);
+
+            // the orientation of the current value we're inspecting
+            curr_orient = ip3::MapOrientation(&(slice.at<double>(1,1)));
+
+            // evaluate neighbors
+            /* if any are greater than the center value along the same orientation,
+             * set the same coordinate in the output to 0, otherwise, use it's value */
+            for (int k = 0; k < slice.rows; ++k) {
+                for (int l = 0; l < slice.cols; ++l) {
+                    if (ip3::MapOrientation(&(slice.at<double>(k,l))) == curr_orient) {
+                        // these values match the orientation of the checked values
+                        curr_slice_val = slice.at<double>(k,l);
+                        if (curr_slice_val > slice.at<double>(1,1)) {
+                            // set I(x,y) (the output) = 0, else same value
+                            output.at<double>(i+k, j+l) = 0;
+                            //output.at<double>(i, j) = 0;
+                        } else {
+                            output.at<double>(i+k, j+l) = curr_slice_val;
+                            //output.at<double>(i, j) = curr_slice_val;
+                        }
+                    }
+                }
+            }
         }
     }
+
+    return output;
 }
 } // namespace

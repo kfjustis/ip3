@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 
 		std::cout << "Calculating filtered gradient...\n" << std::endl;
 		// mean filter with 1 iteration
-		cv::Mat m_filtered = ip3::MeanFilter(&src_image, 3);
+		cv::Mat m_filtered = ip3::MeanFilter(&src_image, 1);
 
 		//m_filtered.convertTo(m_filtered, CV_8UC1);
 		//m_filtered.convertTo(m_filtered, CV_64F);
@@ -97,6 +97,7 @@ int main(int argc, char** argv) {
 		cv::Mat F_orient = ip3::GetGradientOrientation(&F_x, &F_y);
 
 		std::cout << "Executing non-maximum suppression...\n" << std::endl;
+		cv::Mat I = ip3::NonMaxSuppress(&F_orient);
 
 		/*src_image.convertTo(src_image, CV_8UC1);
 		cv::namedWindow("Main :: Source input", CV_WINDOW_AUTOSIZE);
@@ -112,11 +113,14 @@ int main(int argc, char** argv) {
 		cv::namedWindow("Main :: F_mag output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_mag output", F_mag);
 	    cv::waitKey(0);*/
-
 		F_orient.convertTo(F_orient, CV_8UC1);
 		cv::namedWindow("Main :: F_orient output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_orient output", F_orient);
 	    cv::waitKey(0);
+		/*I.convertTo(I, CV_8UC1);
+		cv::namedWindow("Main :: NonMaxSuppress output", CV_WINDOW_AUTOSIZE);
+		cv::imshow("Main :: NonMaxSuppress output", I);
+	    cv::waitKey(0);*/
 
 		if (m_filtered.data != NULL) {
 			m_filtered.release();
@@ -135,6 +139,9 @@ int main(int argc, char** argv) {
 		}
 		if (F_orient.data != NULL) {
 			F_orient.release();
+		}
+		if (I.data != NULL) {
+			I.release();
 		}
 	}
 
