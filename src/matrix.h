@@ -77,6 +77,13 @@ cv::Mat GetGradientOrientation(const cv::Mat* f_x, const cv::Mat* f_y);
 cv::Mat GetMatrixSlice(const cv::Mat* src, int row, int col, int kernel_size);
 
 /*
+ * Maps a given input degree to the value 0-3 depending on the input orientation.
+ * PARAMS: const double* input - the input degree value
+ * RETURN: double - the corresponding mapped orientation value, returns -1 on error
+ */
+double MapOrientation(const double* input);
+
+/*
  * Takes a given matrix and returns the same matrix padded with duplicate values.
  * PARAMS: const cv::Mat* src - reference to source data as an opencv matrix
  * RETURN: a new opencv matrix with padded zeros, empty matrix on failure

@@ -239,6 +239,32 @@ void TEST_GetMatrixSlice() {
 	slice3.release();
 }
 
+void TEST_MapOrientation() {
+	std::cout << "Testing MapOrientation..." << std::endl;
+	double input = -500;
+	double output = -500;
+
+	input = 240;
+	output = ip3::MapOrientation(&input);
+	std::cout << "Input: " << input << std::endl;
+	std::cout << "Output: " << output << std::endl;
+
+	input = 312;
+	output = ip3::MapOrientation(&input);
+	std::cout << "Input: " << input << std::endl;
+	std::cout << "Output: " << output << std::endl;
+
+	input = 2;
+	output = ip3::MapOrientation(&input);
+	std::cout << "Input: " << input << std::endl;
+	std::cout << "Output: " << output << std::endl;
+
+	input = 47;
+	output = ip3::MapOrientation(&input);
+	std::cout << "Input: " << input << std::endl;
+	std::cout << "Output: " << output << std::endl;
+}
+
 void TEST_MeanFilter(const cv::Mat* src) {
 	std::cout << "Testing MeanFilter..." << std::endl;
 	if (src == NULL) {

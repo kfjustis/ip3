@@ -33,7 +33,8 @@ int main(int argc, char** argv) {
 		//ip3::TEST_ConvolveMatrix();
 		//ip3::TEST_ConvolveImage();
 		//ip3::TEST_GetMatrixSlice();
-		ip3::TEST_MeanFilter(&src_image);
+		//ip3::TEST_MeanFilter(&src_image);
+		ip3::TEST_MapOrientation();
 	} else {
 		// load input data
 		cv::Mat src_image;

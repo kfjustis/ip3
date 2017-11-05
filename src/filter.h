@@ -15,4 +15,12 @@ namespace ip3 {
  * RETURN: cv::Mat - the resulting matrix after mean filter convolution, empty matrix on failure
  */
 cv::Mat MeanFilter(const cv::Mat* src, int iterations);
+
+/*
+ * Performs non-maximum suppression against a given matrix containing the source image's
+ * gradient orientation.
+ * PARAMS: const cv::Mat* F_orient - matrix containing the gradient orientation for each pixel in degrees
+ * RETURN: cv::Mat - matrix containing the suppressed and non-suppressed values, empty matrix on failure
+ */
+ cv::Mat NonMaxSuppress(const cv::Mat* F_orient);
 } // namespace

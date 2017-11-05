@@ -15,6 +15,8 @@ void TEST_ConvolveMatrix();
 
 void TEST_GetMatrixSlice();
 
+void TEST_MapOrientation();
+
 void TEST_MeanFilter(const cv::Mat* src);
 
 void TEST_PadMatrix();

@@ -139,7 +139,6 @@ cv::Mat GetGradientOrientation(const cv::Mat* f_x, const cv::Mat* f_y) {
 			}
 			value = atan(f_y->at<double>(i,j)/temp_x) * 180.0 / PI;
 			F_orient.at<double>(i,j) = value;
-			//std::cout << "gradorient: " << value << std::endl;
 		}
 	}
 
@@ -196,6 +195,38 @@ cv::Mat GetMatrixSlice(const cv::Mat* src, int row, int col, int kernel_size) {
 	}
 
 	return slice;
+}
+
+double MapOrientation(const double* input) {
+	if (input == NULL) {
+		return -1;
+	}
+	if (*input > 360 || *input < -360) {
+		return -1;
+	}
+
+	double output = -1;
+
+	// map orientation as follows
+	if (*input >= -45/2 && *input < 45/2) {
+		output = 0; //0
+	} else if (*input >= 45/2 && *input < (45 + (45/2))) {
+		output = 1; //45
+	} else if (*input >= (45 + (45/2)) && *input < (90 + (45/2))) {
+		output = 2; //90
+	} else if (*input >= (90 + (45/2)) && *input < (135 + (45/2))) {
+		output = 3; //135
+	} else if (*input >= (135 + (45/2)) && *input < (180 + (45/2))) {
+		output = 0;
+	} else if (*input >= (180 + (45/2)) && *input < (225 + (45/2))) {
+		output = 1;
+	} else if (*input >= (225 + (45/2)) && *input < (270 + (45/2))) {
+		output = 2;
+	} else if (*input >= (270 + (45/2)) && *input < (315 + (45/2))) {
+		output = 3;
+	}
+
+	return output;
 }
 
 cv::Mat PadMatrix(const cv::Mat* src) {

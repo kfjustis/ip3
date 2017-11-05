@@ -40,4 +40,38 @@ cv::Mat MeanFilter(const cv::Mat* src, int iterations) {
     slice.release();
     return output;
 }
+
+cv::Mat NonMaxSuppress(const cv::Mat* F_orient) {
+    if (F_orient == NULL) {
+        return cv::Mat();
+    }
+
+    double D_orientation = 0;
+    double D_star_orientation = 0;
+    for (int i = 0; i < F_orient->rows; ++i) {
+        for (int j = 0; j < F_orient->cols; ++j) {
+            /* for each pixel, find D* in (0, 45, 90, 135) that
+            is closest to the orientation D at that pixel */
+            D_orientation = F_orient->at<double>(i,j);
+            D_star_orientation = ip3::MapOrientation(&D_orientation);
+            /*if (D_orientation >= -45/2 || D_orientation < 45/2) {
+                D_star_orientation = 0; //0
+            } else if (D_orientation >= 45/2 || D_orientation < (45 + (45/2))) {
+                D_star_orientation = 1; //45
+            } else if (D_orientation >= (45 + (45/2)) || D_orientation < (90 + (45/2)) {
+                D_star_orientation = 2; //90
+            } else if (D_orientation >= (90 + (45/2) || D_orientation < (135 + (45/2))) {
+                D_star_orientation = 3; //135
+            } else if (D_orientation >= (135 + (45/2)) || D_orientation < (180 + (45/2))) {
+                D_star_orientation = 0;
+            } else if (D_orientation >= (180 + (45/2)) || D_orientation < (225 + (45/2))) {
+                D_star_orientation = 1;
+            } else if (D_orientation >= (225 + (45/2)) || D_orientation < (270 + (45/2))) {
+                D_star_orientation = 2;
+            } else if (D_orientation >= (270 + (45/2)) || D_orientation < (315 + (45/2))) {
+                D_star_orientation = 3;
+            }*/
+        }
+    }
+}
 } // namespace
