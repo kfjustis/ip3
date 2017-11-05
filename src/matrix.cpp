@@ -92,6 +92,60 @@ double ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel) {
 	return sum;
 }
 
+cv::Mat GetFullGradient(const cv::Mat* f_x, const cv::Mat* f_y) {
+	if (f_x == NULL || f_y == NULL) {
+		return cv::Mat();
+	}
+
+	if (f_x->rows != f_y->rows && f_x->cols != f_y->cols) {
+		return cv::Mat();
+	}
+
+	// contains the final values for F
+	cv::Mat f_f = cv::Mat::Mat(f_x->rows, f_x->cols, CV_64F);
+
+	double value = 0;
+	for (int i = 0; i < f_x->rows; ++i) {
+		for (int j = 0; j < f_x->cols; ++j) {
+			// calculate the values
+			value = sqrt(pow(f_x->at<double>(i,j), 2) + pow(f_y->at<double>(i,j), 2));
+
+			// write value to f_f
+			f_f.at<double>(i,j) = value;
+		}
+	}
+
+	return f_f;
+}
+
+cv::Mat GetGradientOrientation(const cv::Mat* f_x, const cv::Mat* f_y) {
+	if (f_x == NULL || f_y == NULL) {
+		return cv::Mat();
+	}
+
+	if (f_x->rows != f_y->rows && f_x->cols != f_y->cols) {
+		return cv::Mat();
+	}
+
+	cv::Mat F_orient = cv::Mat::Mat(f_x->rows, f_x->cols, CV_64F);
+
+	double value = 0, temp_x = 0;
+	for (int i = 0; i < f_x->rows; ++i) {
+		for (int j = 0; j < f_x->cols; ++j) {
+			// calculate orientation in degrees and store in F_orient
+			temp_x = f_x->at<double>(i,j);
+			if (temp_x == 0) {
+				temp_x = 1.0;
+			}
+			value = atan(f_y->at<double>(i,j)/temp_x) * 180.0 / PI;
+			F_orient.at<double>(i,j) = value;
+			//std::cout << "gradorient: " << value << std::endl;
+		}
+	}
+
+	return F_orient;
+}
+
 cv::Mat GetMatrixSlice(const cv::Mat* src, int row, int col, int kernel_size) {
 	if (src == NULL) {
 		return cv::Mat();

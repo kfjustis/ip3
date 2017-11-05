@@ -7,6 +7,9 @@
 #include "opencv2/highgui/highgui.hpp"
 
 namespace ip3 {
+//#define PI 3.14159265
+#define PI 3.14
+
 /*
  * Determines the average of the values in the matrix and returns it.
  * Dimensions must be square for this to work.
@@ -40,6 +43,26 @@ cv::Mat ConvolveImage(const cv::Mat* src, const cv::Mat* kernel);
  * RETURN: double - the calculated value after convolution
  */
 double ConvolveMatrix(const cv::Mat* slice, const cv::Mat* kernel);
+
+/*
+ * Computes the gradient at each pixel value based on the x and y gradient
+ * values already calculated from a given source image. If the return
+ * matrix is represented with the indentifier "f_full", then:
+ *      f_full = sqrt ( f_x^2 + f_y^2 )
+ * PARAMS: const cv::Mat* f_x - the gradient representing the x direction
+ *         const cv::Mat* f_y - the gradient representing the y direction
+ * RETURN: cv::Mat - the matrix containing the full gradient values, empty mat on failure
+ */
+cv::Mat GetFullGradient(const cv::Mat* f_x, const cv::Mat* f_y);
+
+/*
+ * Calculates the orientation of the gradient given matrices representing the
+ * the gradient in the x and y direction of the source image. Values are stored in degrees.
+ * PARAMS: const cv::Mat* f_x - the gradient representing the x direction
+ *         const cv::Mat* f_y - the gradient representing the y direction
+ * RETURN: cv::Mat - the matrix containing the gradient orientation at each pixel, empty matrix on failure
+ */
+cv::Mat GetGradientOrientation(const cv::Mat* f_x, const cv::Mat* f_y);
 
 /*
  * Takes a given matrix and upper left coordinate for a region slice.

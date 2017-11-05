@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 		std::cout << "\tHigh threshold: " << (int) t_h << std::endl;
 		std::cout << "\tLow threshold: " << (int) t_l << std::endl << std::endl;
 
-		std::cout << "Calculating filtered gradient..." << std::endl;
+		std::cout << "Calculating filtered gradient...\n" << std::endl;
 		// mean filter with 1 iteration
 		cv::Mat m_filtered = ip3::MeanFilter(&src_image, 3);
 
@@ -92,14 +92,30 @@ int main(int argc, char** argv) {
 
 		cv::Mat F_x = ip3::ConvolveImage(&m_filtered, &sobel_x);
 		cv::Mat F_y = ip3::ConvolveImage(&m_filtered, &sobel_y);
+		cv::Mat F_mag = ip3::GetFullGradient(&F_x, &F_y);
+		cv::Mat F_orient = ip3::GetGradientOrientation(&F_x, &F_y);
 
-		/*F_x.convertTo(F_x, CV_8UC1);
+		std::cout << "Executing non-maximum suppression...\n" << std::endl;
+
+		/*src_image.convertTo(src_image, CV_8UC1);
+		cv::namedWindow("Main :: Source input", CV_WINDOW_AUTOSIZE);
+		cv::imshow("Main :: ource input", src_image);
+		F_x.convertTo(F_x, CV_8UC1);
 		cv::namedWindow("Main :: F_x output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_x output", F_x);
 		F_y.convertTo(F_y, CV_8UC1);
 		cv::namedWindow("Main :: F_y output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_y output", F_y);
 	    cv::waitKey(0);*/
+		/*F_mag.convertTo(F_mag, CV_8UC1);
+		cv::namedWindow("Main :: F_mag output", CV_WINDOW_AUTOSIZE);
+		cv::imshow("Main :: F_mag output", F_mag);
+	    cv::waitKey(0);*/
+
+		F_orient.convertTo(F_orient, CV_8UC1);
+		cv::namedWindow("Main :: F_orient output", CV_WINDOW_AUTOSIZE);
+		cv::imshow("Main :: F_orient output", F_orient);
+	    cv::waitKey(0);
 
 		if (m_filtered.data != NULL) {
 			m_filtered.release();
@@ -112,6 +128,12 @@ int main(int argc, char** argv) {
 		}
 		if (F_y.data != NULL) {
 			F_y.release();
+		}
+		if (F_mag.data != NULL) {
+			F_mag.release();
+		}
+		if (F_orient.data != NULL) {
+			F_orient.release();
 		}
 	}
 
