@@ -138,12 +138,6 @@ cv::Mat GetGradientOrientation(const cv::Mat* f_x, const cv::Mat* f_y) {
 				temp_x = 1.0;
 			}
 			value = atan(f_y->at<double>(i,j)/temp_x) * 180.0 / PI;
-			/*if (value < 0) {
-				value += 180.0;
-			}*/
-			/*if (value > 255) {
-				value = 255;
-			}*/
 			F_orient.at<double>(i,j) = value;
 		}
 	}

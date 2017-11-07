@@ -60,11 +60,9 @@ int main(int argc, char** argv) {
 		std::cout << "Calculating filtered gradient...\n" << std::endl;
 		// mean filter with 1 iteration
 		cv::Mat m_filtered = ip3::MeanFilter(&src_image, (int)sigma);
-		//cv::Mat m_filtered = ip3::MeanFilter(&src_image, 0);
 
-		//m_filtered.convertTo(m_filtered, CV_8UC1);
-		//m_filtered.convertTo(m_filtered, CV_64F);
-		/*cv::namedWindow("Main :: MeanFilter output", CV_WINDOW_AUTOSIZE);
+		/*m_filtered.convertTo(m_filtered, CV_8UC1);
+		cv::namedWindow("Main :: MeanFilter output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: MeanFilter output", m_filtered);
 	    cv::waitKey(0);*/
 
@@ -105,8 +103,8 @@ int main(int argc, char** argv) {
 
 		/*src_image.convertTo(src_image, CV_8UC1);
 		cv::namedWindow("Main :: Source input", CV_WINDOW_AUTOSIZE);
-		cv::imshow("Main :: ource input", src_image);
-		F_x.convertTo(F_x, CV_8UC1);
+		cv::imshow("Main :: ource input", src_image);*/
+		/*F_x.convertTo(F_x, CV_8UC1);
 		cv::namedWindow("Main :: F_x output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_x output", F_x);
 		F_y.convertTo(F_y, CV_8UC1);
