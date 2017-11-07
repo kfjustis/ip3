@@ -101,28 +101,36 @@ int main(int argc, char** argv) {
 		std::cout << "Applying thresholding...\n" << std::endl;
 		cv::Mat thresh = ip3::Thresholding(&I, t_h, t_l);
 
-		/*src_image.convertTo(src_image, CV_8UC1);
+		src_image.convertTo(src_image, CV_8UC1);
 		cv::namedWindow("Main :: Source input", CV_WINDOW_AUTOSIZE);
-		cv::imshow("Main :: ource input", src_image);*/
-		/*F_x.convertTo(F_x, CV_8UC1);
+		cv::imshow("Main :: Source input", src_image);
+		cv::waitKey(0);
+
+		F_x.convertTo(F_x, CV_8UC1);
 		cv::namedWindow("Main :: F_x output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_x output", F_x);
+		cv::waitKey(0);
+
 		F_y.convertTo(F_y, CV_8UC1);
 		cv::namedWindow("Main :: F_y output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_y output", F_y);
-	    cv::waitKey(0);*/
-		/*F_mag.convertTo(F_mag, CV_8UC1);
+	    cv::waitKey(0);
+
+		F_mag.convertTo(F_mag, CV_8UC1);
 		cv::namedWindow("Main :: F_mag output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_mag output", F_mag);
-	    cv::waitKey(0);*/
-		/*F_orient.convertTo(F_orient, CV_8UC1);
+	    cv::waitKey(0);
+
+		F_orient.convertTo(F_orient, CV_8UC1);
 		cv::namedWindow("Main :: F_orient output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: F_orient output", F_orient);
-	    cv::waitKey(0);*/
-		/*I.convertTo(I, CV_8UC1);
+	    cv::waitKey(0);
+
+		I.convertTo(I, CV_8UC1);
 		cv::namedWindow("Main :: NonMaxSuppress output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: NonMaxSuppress output", I);
-	    cv::waitKey(0);*/
+	    cv::waitKey(0);
+
 		thresh.convertTo(I, CV_8UC1);
 		cv::namedWindow("Main :: Thresholding output", CV_WINDOW_AUTOSIZE);
 		cv::imshow("Main :: Thresholding output", thresh);
