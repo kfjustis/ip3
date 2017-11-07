@@ -48,6 +48,7 @@ cv::Mat NonMaxSuppress(const cv::Mat* F_orient) {
 
     cv::Mat output = cv::Mat::Mat(F_orient->rows, F_orient->cols, CV_64F);
     cv::Mat padded = F_orient->clone();
+    padded = ip3::PadMatrix(&padded);
     padded.convertTo(padded, CV_64F);
     cv::Mat slice;
 
@@ -82,6 +83,30 @@ cv::Mat NonMaxSuppress(const cv::Mat* F_orient) {
         }
     }
 
+    return output;
+}
+
+cv::Mat Thresholding(const cv::Mat* nmax_mat, uint8_t t_h, uint8_t t_l) {
+    if (nmax_mat == NULL) {
+        return cv::Mat();
+    }
+
+    cv::Mat output = nmax_mat->clone();
+    cv::Mat visited = cv::Mat::Mat(output.rows, output.cols, CV_64F, double(0));
+
+    for (int i = 0; i < output.rows; ++i) {
+        for (int j = 0; j < output.cols; ++j) {
+            // do stuff
+            if (visited.at<double>(i,j) != 1 && nmax_mat->at<double>(i,j) > t_h) {
+                if (nmax_mat->at<double>(i,j) > t_l) {
+                    output.at<double>(i,j) = 255;
+                } else {
+                    output.at<double>(i,j) = 0;
+                }
+                visited.at<double>(i,j) = 1;
+            }
+        }
+    }
     return output;
 }
 } // namespace

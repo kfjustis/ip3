@@ -23,4 +23,12 @@ cv::Mat MeanFilter(const cv::Mat* src, int iterations);
  * RETURN: cv::Mat - matrix containing the suppressed and non-suppressed values, empty matrix on failure
  */
  cv::Mat NonMaxSuppress(const cv::Mat* F_orient);
+
+/* Performs hysteresis thresholding on a non-max suppressed image.
+ * PARAMS: const cv::Mat* nmax_mat - address of matrix containing non-max suppressed image
+ *         uint8_t t_h - high value used for thresholding
+ *         uint8_t t_l - low value used for thresholding
+ * RETURN: cv::Mat - matrix containing the final output image, empty matrix on failure
+ */
+ cv::Mat Thresholding(const cv::Mat* nmax_mat, uint8_t t_h, uint8_t t_l);
 } // namespace
